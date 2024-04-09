@@ -3,6 +3,9 @@ The app is built using React, Redux, and Redux-Saga.
 The app also uses a Node.js server to serve the data. 
 The app is built using the Create React App tool.
 
+The React app is in the src directory.
+The Node.js server is in the api directory.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
