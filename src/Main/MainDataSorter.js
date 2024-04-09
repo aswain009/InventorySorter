@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 
 
-function Component3({orders, orderItems, items, boxes, users}) {
+function MainDataSorter ({orders, orderItems, items, boxes, users}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [showMore, setShowMore] = useState(true);
+    const [showOrderInfo, setShowOrderInfo] = useState(true);
 
-    console.log('orders', orders)
-    console.log('orderItems', orderItems)
-    console.log('items', items)
-    console.log('boxes', boxes)
+    // console.log('orders', orders)
+    // console.log('orderItems', orderItems)
+    // console.log('items', items)
+    // console.log('boxes', boxes)
 
     function groupItemsByOrderId(orderItems) {
         const groupedItems = orderItems.reduce((acc, item) => {
@@ -18,11 +18,10 @@ function Component3({orders, orderItems, items, boxes, users}) {
             acc[item.order_id].push(item);
             return acc;
         }, {});
-
+        // console.log('Grouped Items', groupedItems)
         return groupedItems;
     }
 
-    // let orderGroups = groupItemsByOrderId(orderItems);
     function determineOrderVolume(orderItems, items, orderId ) {
         const itemsInOrder = groupItemsByOrderId(orderItems);
 
@@ -33,7 +32,7 @@ function Component3({orders, orderItems, items, boxes, users}) {
             volume += itemData.length * itemData.width * itemData.height;
         });
 
-        console.log('OrderVolume', volume)
+        // console.log('OrderVolume', volume)
         return volume;
     }
 
@@ -47,15 +46,15 @@ function Component3({orders, orderItems, items, boxes, users}) {
             total += itemData.price * item.quantity;
         });
 
-        console.log('Total of Order', total)
-        return total;
+        // console.log('Total of Order', total)
+        return parseFloat(total).toFixed(2)
     }
 
     function checkOrderFitsInBox(orderId) {
         const orderVolume = determineOrderVolume(orderItems, items, orderId);
         const box = boxes.find(box => box.volume >= orderVolume);
 
-        console.log('Order fits in box', box.type)
+        // console.log('Order fits in box', box.type)
         return box.type;
     }
 
@@ -71,13 +70,12 @@ function Component3({orders, orderItems, items, boxes, users}) {
             }
         });
 
-        console.log('Order has fragile items', fragile)
+        // console.log('Order has fragile items', fragile)
         return fragile;
     }
 
     function runOrderFunctions(orderId) {
-        console.log('Order Id', orderId)
-
+        // console.log('Order Id', orderId)
         determineOrderVolume(orderItems, items, orderId);
         checkOrderFitsInBox(orderId);
         checkForFragileItems(orderId);
@@ -86,8 +84,34 @@ function Component3({orders, orderItems, items, boxes, users}) {
 
     function getUserName(orderUserId) {
         const user = users.find(user => user.id === orderUserId);
-        console.log('User Name', user.name)
+        // console.log('User Name', user.name)
         return user.name;
+    }
+
+    function orderItemsList(orderId) {
+        const orderItemsList = groupItemsByOrderId(orderItems);
+        // console.log('Order Items List', orderItemsList[orderId])
+        let itemNames = [];
+        orderItemsList[orderId].forEach(orderItem => {
+            const itemData = items.find(itemInOrder => itemInOrder.id === orderItem.item_id);
+            itemNames.push(itemData.name);
+        });
+        // console.log('Item Names', itemNames)
+        return itemNames;
+    }
+
+    function orderItemsListQuantity(orderId) {
+        const orderItemsList = groupItemsByOrderId(orderItems);
+        // console.log('Order Items ID', orderId)
+        // console.log('Order Items List', orderItemsList[orderId])
+
+        let itemNames = [];
+        orderItemsList[orderId].forEach(orderItem => {
+            itemNames.push(orderItem.quantity);
+
+        });
+        // console.log('Item Quantities', itemNames)
+        return itemNames;
     }
 
 
@@ -99,18 +123,24 @@ function Component3({orders, orderItems, items, boxes, users}) {
                     <div key={order.id}>
                         <button onClick={() => {
                             runOrderFunctions(order.id)
-                            setShowMore(!showMore)}
-                        }>
-                            {showMore ? ' ' :
+                            setShowOrderInfo(!showOrderInfo)}
+                        }>{showOrderInfo ? ' ' :
                                 <div>
-                                    <p>Order {order.id}</p>
-                                    <p>Order Total {calculateTotalofOrder(orderItems, items, order.id)}</p>
-                                    <p>Order Volume {determineOrderVolume(orderItems, items, order.id)}</p>
-                                    <p>Order Fits in Box {checkOrderFitsInBox(order.id)}</p>
-                                    <p>Order Has Fragile Items {checkForFragileItems(order.id)}</p>
-                                    <p>User {order.user_id}</p>
-                        </div>
-                            }Order For {getUserName(order.user_id)}</button>
+                                    <p>Order Number: {order.id}</p>
+                                    <p>Order Total: ${calculateTotalofOrder(orderItems, items, order.id)}</p>
+                                    <p>Order Volume: {determineOrderVolume(orderItems, items, order.id)} square inches</p>
+                                    <p>Order Fits in Box: {checkOrderFitsInBox(order.id)}</p>
+                                    <p>Order Has Fragile Items: {checkForFragileItems(order.id) ? 'Yes' : 'No' }</p>
+                                    <div>
+                                        <p>Order Items:</p>
+                                        {orderItemsList(order.id).map(orderItem => (
+                                            <div>
+                                                <p>{orderItem}: {orderItemsListQuantity(order.id)[orderItemsList(order.id).indexOf(orderItem)]}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            }Order For: {getUserName(order.user_id)}</button>
 
                     </div>
                 ))
@@ -119,4 +149,4 @@ function Component3({orders, orderItems, items, boxes, users}) {
     );
 }
 
-export default Component3;
+export default MainDataSorter;

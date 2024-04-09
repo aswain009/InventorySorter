@@ -1,8 +1,8 @@
 import React from 'react';
 import {useEffect, useState} from "react"
-import Component3 from "./component3";
+import MainDataSorter from "./MainDataSorter";
 
-function MyComponent () {
+function MainDataGetter () {
     const [items, setItems] = useState('');
     const [boxes, setBoxes] = useState('');
     const [users, setUsers] = useState('');
@@ -55,7 +55,7 @@ function MyComponent () {
     return (
         <div>
             <h1>Orders to choose</h1>
-            <Component3
+            <MainDataSorter
                 orders={orders}
                 orderItems={orderItems}
                 items={items}
@@ -65,4 +65,4 @@ function MyComponent () {
         </div>
     );
 }
-export default MyComponent;
+export default MainDataGetter;

@@ -1,25 +1,18 @@
-import logo from './Images/logo.svg';
-import './CSS/App.css';
-import React, {useEffect, useState} from "react";
+import logo from '../Images/logo.svg';
+import '../CSS/App.css';
+import React from "react";
+import MainDataGetter from "./MainDataGetter";
 
 function App() {
 
-  const [message, setMessage] = useState('');
-  useEffect(() => {
-    fetch('http://localhost:9000/testAPI')
-        .then((res) => res.text())
-        .then((data) => setMessage(data))
-        .catch((err) => console.log(err));
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
+  <div className="App">
+    <header className="App-header">
         <img src={logo} className="App-logo" alt="logo"/>
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <h1>{message}</h1>
+        <MainDataGetter />
         <a
             className="App-link"
             href="https://reactjs.org"

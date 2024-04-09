@@ -1,15 +1,27 @@
+This project contains a simple React app that displays a list of orders and their details.
+The app is built using React, Redux, and Redux-Saga. 
+The app also uses a Node.js server to serve the data. 
+The app is built using the Create React App tool.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the src directory, you can run:
 
 ### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+In the api directory, you can run:
+
+### `npm start`
+
+Runs the Node app in the development mode.\
+Open [http://localhost:9000](http://localhost:3000) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
